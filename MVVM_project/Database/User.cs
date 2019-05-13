@@ -17,5 +17,14 @@ namespace DAB_NoSQL_assignment.Models {
 
         [BsonElement]
         public string Age { get; set;}
+
+        [BsonElement]
+        public string[] Circles { get; set; }
+
+        [BsonElement]
+        public string[] BlackList { get; set; }
+
+        [BsonElement]
+        public string[] FollowedUserIds { get; set; }
     }
 }
