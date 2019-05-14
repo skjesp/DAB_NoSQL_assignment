@@ -10,9 +10,13 @@ namespace DAB_NoSQL_assignment.Models {
         public string Id { get; set ; }
 
         [BsonElement]
+        public string PostOwner { get; set; }
+
+        [BsonElement]
         public string Text { get; set; } 
 
-        [BsonRepresentation(BsonType.Document)]
-        public Circle Circle { get; set; }
+        //Uncomment to fuck up website
+        //[BsonRepresentation(BsonType.Document)]
+        //public Circle Circle { get; set; }
     }
 }

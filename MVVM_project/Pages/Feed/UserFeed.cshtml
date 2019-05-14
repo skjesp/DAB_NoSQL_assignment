@@ -1,8 +1,23 @@
 ﻿@page
-@model DAB_NoSQL_assignment.Pages.Feed.UserFeedModel
-@{
-    ViewData["Title"] = "UserFeed";
-}
+@model DAB_NoSQL_assignment.UserFeedModel
+
 
 <h1>UserFeed</h1>
 
+View the feed for user:
+<br />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <h5>See the feed for a selected user.</h5>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Input.searchString" class="form-control" placeholder="Josef" />
+                <span asp-validation-for="Input.searchString" class="text-danger"></span>
+            </div>
+            <hr />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>

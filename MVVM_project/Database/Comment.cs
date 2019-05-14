@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace DAB_NoSQL_assignment.Models {
-    public class Coment
+    public class Comment
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

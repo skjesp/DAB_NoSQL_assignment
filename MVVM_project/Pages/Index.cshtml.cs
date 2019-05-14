@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace DAB_NoSQL_assignment.Pages
+namespace DAB_NoSQL_assignment
 {
     public class IndexModel : PageModel
     {
