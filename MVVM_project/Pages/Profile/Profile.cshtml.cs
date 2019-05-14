@@ -54,7 +54,7 @@ namespace DAB_NoSQL_assignment
             return Page();
         }
 
-        public IActionResult OnPostShowComment()
+        public IActionResult OnPostShowPosts()
         {
             userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList();
             postList = _posts.Find(post => post.PostOwner == userList[0].Id).ToList();

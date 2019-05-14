@@ -13,8 +13,10 @@ namespace DAB_NoSQL_assignment.Models {
         public string PostOwner { get; set; }
 
         [BsonElement]
-        public string Text { get; set; } 
+        public string Text { get; set; }
 
+        [BsonElement]
+        public string[] Comments { get; set; }
         //Uncomment to fuck up website
         //[BsonRepresentation(BsonType.Document)]
         //public Circle Circle { get; set; }

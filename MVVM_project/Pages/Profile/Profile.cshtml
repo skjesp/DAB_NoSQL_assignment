@@ -19,31 +19,38 @@
             </div>
             <hr />
             <button type="submit" class="btn btn-primary" asp-page-handler="PostComment">Create a Post</button>
-            <button type="submit" class="btn btn-primary" asp-page-handler="ShowComment">Show Posts</button>
+            <button type="submit" class="btn btn-primary" asp-page-handler="ShowPosts">Show Posts</button>
         </form>
     </div>
 </div>
 
-
-<h5>List of Posts</h5>
-<table>
-    <tr>
-        <th>PostOwner</th>
-        <th>Text</th>
-    </tr>
-
-    @if (Model.postList != null && Model.userList != null)
-    {
-        @foreach (var post in @Model.postList)
-        {
-            <tr>
-                <td>@Model.userList[0].Name</td>
-                <td>@post.Text</td>
-            </tr>
-        }
-    }
-
-</table>
-
-
-
+@if (Model.postList != null && Model.userList != null)
+{
+    @foreach (var post in @Model.postList)
+     {
+         <table id="PostSection">
+             <tr>
+                 <th>PostOwner</th>
+                 <th>Text</th>
+             </tr>
+             <tr>
+                 <td>@Model.userList[0].Name</td>
+                 <td>@post.Text</td>
+             </tr>
+             <tr>
+                 <th colspan="2">Comments:</th>
+             </tr>
+             @if (post.Comments != null)
+             {
+                 @foreach (var comment in post.Comments)
+                  {
+                      <tr>
+                          <td >@comment</td>
+                      </tr>
+                  }
+             }
+         </table>
+         <br/>
+         <br/>
+     }
+}
