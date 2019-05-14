@@ -9,11 +9,11 @@ View the feed for user:
 <div class="row">
     <div class="col-md-6">
         <form method="post">
-            <h5>See the feed for a selected user.</h5>
+            <h5>Show the feed for a selected user.</h5>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="Input.searchString" class="form-control" placeholder="Josef" />
+                <input asp-for="Input.searchString" class="form-control" placeholder="ex. Josef" />
                 <span asp-validation-for="Input.searchString" class="text-danger"></span>
             </div>
             <hr />

@@ -16,7 +16,8 @@ namespace DAB_NoSQL_assignment
         private readonly IMongoCollection<User> _users;
         private readonly IMongoCollection<Post> _posts;
 
-        public List<Post> posts;
+        public List<Post> postList;
+        public List<User> userList;
 
         public ProfileModel(IConfiguration config)
         {
@@ -27,17 +28,38 @@ namespace DAB_NoSQL_assignment
         }
 
         [BindProperty]
-        public Post post { get; set; }
+        public Post postBoundProperty { get; set; }
+
+        [BindProperty]
+        public User userBoundProperty { get; set; }
 
         public IActionResult OnPostPostComment()
         {
-            _posts.InsertOne(post);
+            //See if user exists
+            userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList();
+
+            if (userList.Count == 0)
+            {
+                return Page();
+            }
+            
+            // Add userid to postBoundProperty (object)
+            postBoundProperty.PostOwner = userList[0].Id;
+
+            // Upload post in database
+            _posts.InsertOne(postBoundProperty);
+
+            // Add selected posts to list.
+            postList = _posts.Find(post => post.PostOwner == userList[0].Id).ToList();
             return Page();
         }
 
-        public void OnGet()
+        public IActionResult OnPostShowComment()
         {
-            posts = _posts.Find(post => true).ToList();
+            userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList();
+            postList = _posts.Find(post => post.PostOwner == userList[0].Id).ToList();
+            return Page();
         }
+ 
     }
 }
