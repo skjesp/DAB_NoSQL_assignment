@@ -13,9 +13,12 @@ namespace DAB_NoSQL_assignment
 {
     public class ProfileModel : PageModel
     {
+        // Collections from database
         private readonly IMongoCollection<User> _users;
         private readonly IMongoCollection<Post> _posts;
+        private readonly IMongoCollection<Comment> _comments;
 
+        // Lists that page reads from 
         public List<Post> postList;
         public List<User> userList;
 
@@ -25,6 +28,7 @@ namespace DAB_NoSQL_assignment
             var database = client.GetDatabase("mongodb");
             _users = database.GetCollection<User>("Users");
             _posts = database.GetCollection<Post>("Posts");
+            _comments = database.GetCollection<Comment>("Comments");
         }
 
         [BindProperty]
@@ -33,10 +37,13 @@ namespace DAB_NoSQL_assignment
         [BindProperty]
         public User userBoundProperty { get; set; }
 
-        public IActionResult OnPostPostComment()
+        [BindProperty]
+        public Comment commentBoundProperty { get; set; }
+
+        public IActionResult OnPostPost()
         {
             //See if user exists
-            userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList();
+            userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList(); // TODO: Try using .single()
 
             if (userList.Count == 0)
             {
@@ -58,6 +65,31 @@ namespace DAB_NoSQL_assignment
         {
             userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList();
             postList = _posts.Find(post => post.PostOwner == userList[0].Id).ToList();
+            return Page();
+        }
+
+        public IActionResult OnPostAddComment()
+        {
+            // Add writer-information to the comment which is to be added to a post.
+            User CommentWriter = _users.Find(user => user.Name == commentBoundProperty.Writer_userName).Single();
+            commentBoundProperty.Writer_userID = CommentWriter.Id;
+
+            // Find relevant post for the comment
+            Post PostToAddComment = _posts.Find(post => post.Id == commentBoundProperty.OwnerPostID).Single();
+
+            // Add the comment to the post
+            if (PostToAddComment.Comments == null)
+            {
+                PostToAddComment.Comments = new List<Comment>();
+            }
+
+            PostToAddComment.Comments.Add(commentBoundProperty);
+
+            // Update the post
+            _posts.FindOneAndReplace(post => post.PostOwner == PostToAddComment.PostOwner, PostToAddComment);
+
+            // Insert comment in database
+            _comments.InsertOne(commentBoundProperty);
             return Page();
         }
  
