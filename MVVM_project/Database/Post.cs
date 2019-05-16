@@ -17,6 +17,7 @@ namespace DAB_NoSQL_assignment.Models {
 
         [BsonElement]
         public string[] Comments { get; set; }
+        
         //Uncomment to fuck up website
         //[BsonRepresentation(BsonType.Document)]
         //public Circle Circle { get; set; }
