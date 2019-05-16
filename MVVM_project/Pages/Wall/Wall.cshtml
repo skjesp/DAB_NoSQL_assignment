@@ -1,9 +1,30 @@
-﻿
+﻿@page
+@model DAB_NoSQL_assignment.UserFeedModel
+
 
 <h1>Wall</h1>
-UserID:
+
+View the users wall
 <br />
-<br />
-GuestID:
-<br />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <h5>Select User and Guest.</h5>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Input.searchString" class="form-control" placeholder="ex. Josef" />
+                <span asp-validation-for="Input.searchString" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Input.searchString" class="form-control" placeholder="ex. Josef" />
+                <span asp-validation-for="Input.searchString" class="text-danger"></span>
+            </div>
+            <hr />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+
 

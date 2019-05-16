@@ -12,7 +12,8 @@ namespace DAB_NoSQL_assignment.Models {
         [BsonElement]
         public string ForUser { get; set;} 
 
-        [BsonRepresentation(BsonType.Document)]
-        public User User { get; set;} 
+        [BsonElement]
+        public string[] Members { get; set;} 
+        
     }
 }
