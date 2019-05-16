@@ -24,5 +24,25 @@
         </tr>
     }
 </table>
+<br />
+
+<h5>Blacklists</h5>
+<table>
+    <tr>
+        <th>BlacklistId</th>
+        <th>forUser</th>
+        <th>users on list</th>
+    </tr>
+
+    @foreach (var blacklist in @Model.blacklist)
+    {
+        <tr>
+            <td>@blacklist.Id</td>
+            <td>@blacklist.ForUser</td>
+            <td>@string.Join(", ", @blacklist.listUsers)</td>
+            
+        </tr>
+    }
+</table>
 
 <br />
