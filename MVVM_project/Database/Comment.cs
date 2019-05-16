@@ -22,7 +22,7 @@ namespace DAB_NoSQL_assignment.Models {
         [BsonElement]
         public string Writer_userName { get; set; }
 
-  
+
         //[BsonRepresentation(BsonType.Document)]
         //public User OwnerUser { get; set; }
     }
