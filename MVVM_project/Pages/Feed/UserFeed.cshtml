@@ -38,7 +38,7 @@ View the feed for user:
                 <td>@post.Text</td>
             </tr>
             <tr>
-                <th colspan="2">Commenter:</th>
+                <th colspan="2">Commenters:</th>
                 <th colspan="2">Comments:</th>
             </tr>
             @if (post.Comments != null)
@@ -46,8 +46,8 @@ View the feed for user:
                 @foreach (var comment in post.Comments)
                 {
                     <tr>
-                        <td>@Model.getcommenter(comment)</td>
-                        <td>@Model.getcomment(comment)</td>
+                        <td>@comment.Writer_userName</td>
+                        <td>@comment.Text</td>
                     </tr>
                 }
             }

@@ -34,19 +34,6 @@ namespace DAB_NoSQL_assignment
 
         }
 
-        public string getcommenter(string commentid)
-        {
-            var comment = _comments.Find(comm => comm.Id == commentid).FirstOrDefault();
-            var commenter = _users.Find(comntr => comntr.Id == comment.User).FirstOrDefault();
-            return commenter.Name;
-        }
-
-        public string getcomment(string commentid)
-        {
-            var comment = _comments.Find(comm => comm.Id == commentid).FirstOrDefault();
-            return comment.Text;
-        }
-
         [BindProperty]
         public InputModel Input { get; set; }
 
