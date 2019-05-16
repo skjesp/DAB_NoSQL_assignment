@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -16,10 +17,9 @@ namespace DAB_NoSQL_assignment.Models {
         public string Text { get; set; }
 
         [BsonElement]
-        public string[] Comments { get; set; }
-        
-        //Uncomment to fuck up website
-        //[BsonRepresentation(BsonType.Document)]
-        //public Circle Circle { get; set; }
+        public List<Comment> Comments { get; set; }
+
+        [BsonElement]
+        public Circle Circle { get; set; }
     }
 }

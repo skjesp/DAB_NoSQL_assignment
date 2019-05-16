@@ -1,10 +1,10 @@
 ﻿@page
 @model DAB_NoSQL_assignment.UserFeedModel
-
+@{
+    ViewData["Title"] = "User Feed";
+}
 
 <h1>UserFeed</h1>
-
-View the feed for user:
 <br />
 <div class="row">
     <div class="col-md-6">
@@ -21,3 +21,36 @@ View the feed for user:
         </form>
     </div>
 </div>
+
+@if (Model._postlist != null)
+{
+    @foreach (var post in @Model._postlist)
+    {
+        <table id="PostSection">
+            <tr>
+                <th>PostOwner</th>
+                <th>Text</th>
+            </tr>
+            <tr>
+                <td>@post.PostOwner</td>
+                <td>@post.Text</td>
+            </tr>
+            <tr>
+                <th>Commenters:</th>
+                <th>Comments:</th>
+            </tr>
+            @if (post.Comments != null)
+            {
+                @foreach (var comment in post.Comments)
+                {
+                    <tr>
+                        <td>@comment.Writer_userName</td>
+                        <td>@comment.Text</td>
+                    </tr>
+                }
+            }
+        </table>
+        <br />
+        <br />
+    }
+}

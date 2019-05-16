@@ -13,12 +13,20 @@ namespace DAB_NoSQL_assignment
     public class UserFeedModel : PageModel
     {
         private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<Post> _posts;
+        private readonly IMongoCollection<Circle> _circles;
+        private readonly IMongoCollection<Comment> _comments;
+        private User user;
+        public List<Post> _postlist=new List<Post>();
 
         public UserFeedModel(IConfiguration config)
         {
             var client = new MongoClient(config.GetConnectionString("mongodb"));
             var database = client.GetDatabase("mongodb");
             _users = database.GetCollection<User>("Users");
+            _posts = database.GetCollection<Post>("Posts");
+            _circles = database.GetCollection<Circle>("Circles");
+            _comments = database.GetCollection<Comment>("Comments");
         }
 
         public void OnGet()
@@ -35,43 +43,60 @@ namespace DAB_NoSQL_assignment
         }
 
         //Search students by AU-id and get Courses with status and grade.
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-           // var users = from sc in 
+        public IActionResult OnPost()
+        {
+            if (!string.IsNullOrEmpty(Input.searchString))
+            {
+                user = _users.Find(ur => ur.Name == Input.searchString).FirstOrDefault();
 
+                //Check if we found anyting
+                if (user!=null)
+                {
+                    
+                }
+                else
+                {
+                    return RedirectToPage();
+                }
 
-            //var courseStudents = from sc in _db.CourseStudents
-            //    select sc;
+            }
+            else
+            {
+                return RedirectToPage();
+            }
 
-            //if (!string.IsNullOrEmpty(Input.searchString))
-            //{
-            //    courseStudents = courseStudents.Where(s => s.Student.AuId.Contains(Input.searchString));
+            _postlist= _posts.Find(post => post.PostOwner == user.Id).ToList();
 
-            //    //Check if we found anyting
-            //    if (courseStudents.AsNoTracking().ToList().Count != 0)
-            //    {
-            //        //Succes found a match
+            foreach (var circle in user.Circles)
+            {
+                var crcl = _circles.Find(circ => circ.Id == circle).FirstOrDefault();
+                var leader = _users.Find(user => user.Id == crcl.ForUser).FirstOrDefault();
+                if (!leader.BlackList.Contains(user.Id))
+                {
+                    _postlist.AddRange(_posts.Find(post => post.PostOwner == leader.Id && post.Circle.Id==crcl.Id).ToList());
+                }
 
-            //    }
-            //    else
-            //    {
+                foreach (var member in crcl.Members)
+                {
+                    var usr = _users.Find(user => user.Id == member).FirstOrDefault();
+                    if (!usr.BlackList.Contains(user.Id))
+                    {
+                        _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id && post.Circle.Id == crcl.Id).ToList());
+                    }
+                }
+            }
 
-            //        //Failed no match reload page - Show all.
-            //        return RedirectToPage();
-            //    }
-
-            //}
-            //else
-            //{
-
-            //    //Do nothing if no search-string id entered.
-            //}
-            ////Load list of StudentGroups
-            //CourseStudents = await courseStudents.AsNoTracking().Include(cs => cs.Student).Include(cs => cs.Course).ToListAsync();
-
-            ////Update current page.
-        //    return Page();
-        //}
+            foreach (var followed in user.FollowedUserIds)
+            {
+                var usr = _users.Find(ur => ur.Id == followed).FirstOrDefault();
+                if (!usr.BlackList.Contains(user.Id))
+                {
+                    _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id).ToList());
+                }
+            }
+            //Update current page.
+            return Page();
+        }
 
 
     }
