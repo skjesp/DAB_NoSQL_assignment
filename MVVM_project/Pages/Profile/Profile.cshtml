@@ -12,11 +12,15 @@
             <div class="form-group">
                 <!--Type owner of post here-->
                 <label asp-for="postBoundProperty.PostOwner"> Owner of Posts</label>
-                <input asp-for="postBoundProperty.PostOwner" class="form-control"/>
+                <input asp-for="postBoundProperty.PostOwner" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="postBoundProperty.Text">Post Text</label>
                 <input asp-for="postBoundProperty.Text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="postcircleBoundProperty">Post Circle</label>
+                <input asp-for="postcircleBoundProperty" class="form-control" />
             </div>
             <hr />
             <button type="submit" class="btn btn-primary" asp-page-handler="Post">Create a Post</button>
@@ -40,10 +44,10 @@
                             <th>Comments:</th>
                             <th>
                                 Add comment:
-                                <br/>
+                                <br />
                                 <label asp-for="commentBoundProperty.Writer_userName">Name of commentWriter</label>
                                 <input asp-for="commentBoundProperty.Writer_userName" />
-                                <br/>
+                                <br />
                                 <label asp-for="commentBoundProperty.Text">Text</label>
                                 <input asp-for="commentBoundProperty.Text" class="form-control" />
                                 <input asp-for="commentBoundProperty.OwnerPostID" value="@post.Id" type="hidden" />

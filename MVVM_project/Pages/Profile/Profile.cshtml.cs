@@ -17,10 +17,11 @@ namespace DAB_NoSQL_assignment
         private readonly IMongoCollection<User> _users;
         private readonly IMongoCollection<Post> _posts;
         private readonly IMongoCollection<Comment> _comments;
+        private readonly IMongoCollection<Circle> _circles;
 
         // Lists that page reads from 
         public List<Post> postList;
-        public List<User> userList;
+        public User user;
 
         public ProfileModel(IConfiguration config)
         {
@@ -29,10 +30,14 @@ namespace DAB_NoSQL_assignment
             _users = database.GetCollection<User>("Users");
             _posts = database.GetCollection<Post>("Posts");
             _comments = database.GetCollection<Comment>("Comments");
+            _circles = database.GetCollection<Circle>("Circles");
         }
 
         [BindProperty]
         public Post postBoundProperty { get; set; }
+
+        [BindProperty]
+        public String postcircleBoundProperty { get; set; }
 
         [BindProperty]
         public User userBoundProperty { get; set; }
@@ -43,28 +48,31 @@ namespace DAB_NoSQL_assignment
         public IActionResult OnPostPost()
         {
             //See if user exists
-            userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList(); // TODO: Try using .single()
+            user = _users.Find(user => user.Name == postBoundProperty.PostOwner).FirstOrDefault(); // TODO: Try using .single()
 
-            if (userList.Count == 0)
+            if (user==null)
             {
                 return Page();
             }
             
             // Add userid to postBoundProperty (object)
-            postBoundProperty.PostOwner = userList[0].Id;
+            postBoundProperty.PostOwner = user.Id;
+
+            var crcl = _circles.Find(c => c.Id == postcircleBoundProperty).FirstOrDefault();
+            postBoundProperty.Circle = crcl;
 
             // Upload post in database
             _posts.InsertOne(postBoundProperty);
 
             // Add selected posts to list.
-            postList = _posts.Find(post => post.PostOwner == userList[0].Id).ToList();
+            postList = _posts.Find(post => post.PostOwner == user.Id).ToList();
             return Page();
         }
 
         public IActionResult OnPostShowPosts()
         {
-            userList = _users.Find(user => user.Name == postBoundProperty.PostOwner).ToList();
-            postList = _posts.Find(post => post.PostOwner == userList[0].Id).ToList();
+            user = _users.Find(user => user.Name == postBoundProperty.PostOwner).FirstOrDefault();
+            postList = _posts.Find(post => post.PostOwner == user.Id).ToList();
             return Page();
         }
 

@@ -43,7 +43,7 @@ namespace DAB_NoSQL_assignment
         }
 
         //Search students by AU-id and get Courses with status and grade.
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             if (!string.IsNullOrEmpty(Input.searchString))
             {
@@ -65,7 +65,7 @@ namespace DAB_NoSQL_assignment
                 return RedirectToPage();
             }
 
-            _postlist=_posts.Find(post => post.PostOwner == user.Id).ToList();
+            _postlist= _posts.Find(post => post.PostOwner == user.Id).ToList();
 
             foreach (var circle in user.Circles)
             {
@@ -73,7 +73,7 @@ namespace DAB_NoSQL_assignment
                 var leader = _users.Find(user => user.Id == crcl.ForUser).FirstOrDefault();
                 if (!leader.BlackList.Contains(user.Id))
                 {
-                    _postlist.AddRange(_posts.Find(post => post.PostOwner == leader.Id).ToList());
+                    _postlist.AddRange(_posts.Find(post => post.PostOwner == leader.Id && post.Circle.Id==crcl.Id).ToList());
                 }
 
                 foreach (var member in crcl.Members)
@@ -81,7 +81,7 @@ namespace DAB_NoSQL_assignment
                     var usr = _users.Find(user => user.Id == member).FirstOrDefault();
                     if (!usr.BlackList.Contains(user.Id))
                     {
-                        _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id).ToList());
+                        _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id && post.Circle.Id == crcl.Id).ToList());
                     }
                 }
             }
