@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -19,12 +20,12 @@ namespace DAB_NoSQL_assignment.Models {
         public string Age { get; set;}
 
         [BsonElement]
-        public string[] Circles { get; set; }
+        public List<string> Circles { get; set; }
 
         [BsonElement]
-        public string[] BlackList { get; set; }
+        public List<string> BlackList { get; set; }
 
         [BsonElement]
-        public string[] FollowedUserIds { get; set; }
+        public List<string> FollowedUserIds { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -12,7 +13,7 @@ namespace DAB_NoSQL_assignment.Models {
         [BsonElement]
         public string ForUser { get; set;} 
 
-        [BsonRepresentation(BsonType.Document)]
-        public User User { get; set;} 
+        [BsonElement]
+        public List<string> Members { get; set;} 
     }
 }
