@@ -12,6 +12,7 @@
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="owner">User name (owner of circle)</label>
                 <input asp-for="owner" class="form-control" placeholder="ex. Jim" />
                 <span asp-validation-for="owner" class="text-danger"></span>
             </div>
