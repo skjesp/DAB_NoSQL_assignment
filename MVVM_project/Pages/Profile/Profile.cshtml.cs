@@ -64,6 +64,7 @@ namespace DAB_NoSQL_assignment
 
             var crcl = _circles.Find(c => c.Id == postcircleBoundProperty).FirstOrDefault();
             postBoundProperty.Circle = crcl;
+            
 
             // Upload post in database
             _posts.InsertOne(postBoundProperty);
