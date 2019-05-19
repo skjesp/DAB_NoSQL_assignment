@@ -84,10 +84,8 @@ namespace DAB_NoSQL_assignment
         public IActionResult OnPostAddComment(string id)
         {
             // Add writer-information to the comment which is to be added to a post.
-            User CommentWriter = _users.Find(user => user.Name == postBoundProperty.PostOwner).Single();
-            commentBoundProperty.Writer_userName = CommentWriter.Name;
+            User CommentWriter = _users.Find(user => user.Name == commentBoundProperty.Writer_userName).Single();
             commentBoundProperty.Writer_userID = CommentWriter.Id;
-            commentBoundProperty.Text = postBoundProperty.Text;
             commentBoundProperty.OwnerPostID = id;
 
             // Find relevant post for the comment
