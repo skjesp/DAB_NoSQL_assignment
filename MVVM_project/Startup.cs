@@ -32,7 +32,6 @@ namespace DAB_NoSQL_assignment
             });
 
             services.AddScoped<AddUserModel>();
-            services.AddScoped<UserBlacklistModel>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

@@ -42,7 +42,6 @@ namespace DAB_NoSQL_assignment
             public string searchString { get; set; }
         }
 
-        //Search students by AU-id and get Courses with status and grade.
         public IActionResult OnPost()
         {
             if (!string.IsNullOrEmpty(Input.searchString))

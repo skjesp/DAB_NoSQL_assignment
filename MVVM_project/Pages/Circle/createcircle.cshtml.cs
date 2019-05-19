@@ -30,7 +30,6 @@ namespace DAB_NoSQL_assignment
         [BindProperty]
         public String owner { get; set; }
 
-        //Search students by AU-id and get Courses with status and grade.
         public IActionResult OnPost()
         {
             user = _users.Find(user => user.Name == owner).FirstOrDefault();
