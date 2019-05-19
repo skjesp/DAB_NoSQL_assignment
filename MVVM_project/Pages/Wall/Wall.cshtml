@@ -15,10 +15,12 @@ View the users wall
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Input.searchUser">Username</label>
                 <input asp-for="Input.searchUser" class="form-control" placeholder="ex. Josef" />
                 <span asp-validation-for="Input.searchUser" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Input.searchGuest">Guestname</label>
                 <input asp-for="Input.searchGuest" class="form-control" placeholder="ex. Josef" />
                 <span asp-validation-for="Input.searchGuest" class="text-danger"></span>
             </div>
