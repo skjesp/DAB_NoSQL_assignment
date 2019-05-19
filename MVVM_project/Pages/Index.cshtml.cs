@@ -30,9 +30,6 @@ namespace DAB_NoSQL_assignment
         {
             //Load list of User
             users =  _addUser.Get();
-
-            //Load blacklist
-            blacklist =  _blacklist.Get();
         }
 
     }
