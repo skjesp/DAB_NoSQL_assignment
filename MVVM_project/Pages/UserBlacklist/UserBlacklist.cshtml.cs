@@ -34,58 +34,7 @@ namespace DAB_NoSQL_assignment
             public string userName { get; set; }
             public string blacklistName { get; set; }
         }
-
-        [BindProperty]
-        public User user { get; set; }
-
-        public List<SelectListItem> listUsers { get; set; }
-
-        public List<User> CreateListAllUsers()
-        {
-            return _users.Find(user => true).ToList();
-        }
-
-        public User FindUserByName(string userName)
-        {
-            return _users.Find(user => user.Name == userName).FirstOrDefault();
-        }
-
-        public List<Blacklist> Get()
-        {
-            return _blacklist.Find(user => true).ToList();
-        }
-
-
-        //Parameter 1(userName): The userName which to check if on 2nd parameters(userNamesBlacklist) blacklist.
-        public bool IsUserNameOnUsersBlacklist(string userName, string userNamesBlacklist)
-        {
-            //Find both users by their names
-            var userToCheck = FindUserByName(userName);
-
-            var usersBlackList = FindUserByName(userNamesBlacklist);
-
-            var result = _blacklist.Find(x => x.ForUser.Equals(usersBlackList.Id) && x.listUsers.Contains(ObjectId.Parse(userToCheck.Id))).FirstOrDefault();
-
-            if(result != null)
-            {
-                return true;
-
-            } else {
-
-                return false;
-            }
-        }
-
-        public void OnGet()
-        {
-            List<SelectListItem> listUser = new List<SelectListItem>();  
-            foreach (var user in CreateListAllUsers())
-            {
-                listUser.Add(new SelectListItem() { Value = user.Id, Text = user.Name });
-            }
-            listUsers = listUser;
-        }
-
+     
         public IActionResult OnPost()
         {
             //Validedata ModelState is valid.
