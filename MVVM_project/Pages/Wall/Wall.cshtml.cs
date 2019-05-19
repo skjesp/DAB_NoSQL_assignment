@@ -76,9 +76,10 @@ namespace DAB_NoSQL_assignment
             
             _postlist = _posts.Find(post => post.PostOwner == user.Id && post.Circle == null).ToList();
             
-            foreach (var circle in guest.Circles)
+            foreach (var crcl in guest.Circles)
             {
-                if (circle.Members.Contains(user))
+                var circle = _circles.Find(c => c.Id == crcl).FirstOrDefault();
+                if (circle.Members.Contains(user.Id)||circle.ForUser==user.Name)
                 {
                     _postlist.AddRange(_posts.Find(post => post.PostOwner == user.Id && post.Circle.Id == circle.Id).ToList());
                 }
