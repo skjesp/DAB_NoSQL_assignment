@@ -1,0 +1,29 @@
+﻿@page
+@model DAB_NoSQL_assignment.FollowModel
+
+<p>Use this page to block user</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <h5>Follow a user to see their public posts in your feed.</h5>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Input.Follower"></label>
+                <input asp-for="Input.Follower" class="form-control" />
+                <span asp-validation-for="Input.Follower" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Followed"></label>
+                <input asp-for="Input.Followed" class="form-control" />
+                <span asp-validation-for="Input.Followed" class="text-danger"></span>
+            </div>
+
+            <hr />
+            <button type="submit" class="btn btn-primary">Follow</button>
+        </form>
+    </div>
+</div>

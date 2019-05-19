@@ -79,7 +79,7 @@ namespace DAB_NoSQL_assignment
                 foreach (var mbr in circle.Members)
                 {
                     var member = _users.Find(m => m.Id == mbr).FirstOrDefault();
-                    if (!member.BlackList.Contains(user.Id))
+                    if (!member.BlackList.Contains(user.Id) && member.Id != user.Id)
                     {
                         _postlist.AddRange(_posts.Find(post => post.PostOwner == member.Id && post.Circle.Id == circle.Id).ToList());
                     }
@@ -91,9 +91,10 @@ namespace DAB_NoSQL_assignment
                 var usr = _users.Find(ur => ur.Id == followed).FirstOrDefault();
                 if (!usr.BlackList.Contains(user.Id))
                 {
-                    _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id).ToList());
+                    _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id && post.Circle==null).ToList());
                 }
             }
+            
             //Update current page.
             return Page();
         }
