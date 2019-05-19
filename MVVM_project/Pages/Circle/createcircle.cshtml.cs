@@ -33,14 +33,23 @@ namespace DAB_NoSQL_assignment
         //Search students by AU-id and get Courses with status and grade.
         public IActionResult OnPost()
         {
-            user = _users.Find(user => user.Name == owner).FirstOrDefault(); // TODO: Try using .single()
+            user = _users.Find(user => user.Name == owner).FirstOrDefault();
 
             if (user == null)
             {
                 return Page();
             }
-            circlebindproperty.ForUser = user.Id;
+            circlebindproperty.ForUser = user.Name;
+            circlebindproperty.Members = new List<User>();
             _circles.InsertOne(circlebindproperty);
+
+            if (user.Circles == null)
+            {
+                user.Circles = new List<Circle>();
+            }
+
+            user.Circles.Add(circlebindproperty);
+            _users.FindOneAndReplace(u => u.Name == user.Name, user);
 
             return Page();
         }

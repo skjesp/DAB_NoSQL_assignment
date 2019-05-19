@@ -1,0 +1,59 @@
+﻿@page
+@model DAB_NoSQL_assignment.AddtocircleModel
+@{
+    ViewData["Title"] = "Add users to circle";
+}
+
+<h1>Add users to circle</h1>
+<br />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            @if (Model.circleList != null)
+            {
+
+                @foreach (var circle in @Model.circleList)
+                {
+                    <table>
+                        <tr>
+                            <th>Circle Id</th>
+                            <th>Circle Owner</th>
+                        </tr>
+                        <tr>
+                            <td>@circle.Id</td>
+                            <td>@circle.ForUser</td>
+                        </tr>
+                        <tr>
+                            <th>Members: </th>
+                            <th>
+                                Add member:
+                                <br />
+                                <label asp-for="membername">Name of commentWriter</label>
+                                <input asp-for="membername" />
+                                <br />
+                                <input asp-for="activecircle" value="@circle.Id" type="hidden" />
+                                <button type="submit" class="btn btn-primary" asp-page-handler="AddMember">Add</button>
+
+                            </th>
+                        </tr>
+                        @if (circle.Members != null)
+                        {
+                            @foreach (var member in circle.Members)
+                            {
+                                <tr>
+                                    <td>@member.Id</td>
+                                    <td>@member.Name</td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                    <br />
+                    <br />
+                }
+
+
+            }
+        </form>
+    </div>
+</div>
+
