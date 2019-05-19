@@ -23,6 +23,7 @@
                 <input asp-for="postcircleBoundProperty" class="form-control" />
             </div>
             <hr />
+
             <button type="submit" class="btn btn-primary" asp-page-handler="Post">Create a Post</button>
             <button type="submit" class="btn btn-primary" asp-page-handler="ShowPosts">Show Posts</button>
 
@@ -44,14 +45,10 @@
                             <th>Comments:</th>
                             <th>
                                 Add comment:
-                                <br />
-                                <label asp-for="commentBoundProperty.Writer_userName">Name of comment writer</label>
-                                <input asp-for="commentBoundProperty.Writer_userName" />
-                                <br />
-                                <label asp-for="commentBoundProperty.Text">Text</label>
-                                <input asp-for="commentBoundProperty.Text" class="form-control" />
-                                <input asp-for="commentBoundProperty.OwnerPostID" value="@post.Id" type="hidden" />
-                                <button type="submit" class="btn btn-primary" asp-page-handler="AddComment">Add</button>
+                                <button type="submit" class="btn btn-primary"
+                                        asp-page-handler="AddComment" asp-route-id="@post.Id">
+                                    Add
+                                </button>
 
                             </th>
                         </tr>
@@ -60,8 +57,8 @@
                             @foreach (var comment in post.Comments)
                             {
                                 <tr>
-                                    <td>@comment.Text</td>
                                     <td>@comment.Writer_userName</td>
+                                    <td>@comment.Text</td>
                                 </tr>
                             }
                         }

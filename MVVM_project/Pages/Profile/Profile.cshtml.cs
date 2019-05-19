@@ -81,11 +81,14 @@ namespace DAB_NoSQL_assignment
             return Page();
         }
 
-        public IActionResult OnPostAddComment()
+        public IActionResult OnPostAddComment(string id)
         {
             // Add writer-information to the comment which is to be added to a post.
-            User CommentWriter = _users.Find(user => user.Name == commentBoundProperty.Writer_userName).Single();
+            User CommentWriter = _users.Find(user => user.Name == postBoundProperty.PostOwner).Single();
+            commentBoundProperty.Writer_userName = CommentWriter.Name;
             commentBoundProperty.Writer_userID = CommentWriter.Id;
+            commentBoundProperty.Text = postBoundProperty.Text;
+            commentBoundProperty.OwnerPostID = id;
 
             // Find relevant post for the comment
             Post PostToAddComment = _posts.Find(post => post.Id == commentBoundProperty.OwnerPostID).Single();
@@ -99,7 +102,7 @@ namespace DAB_NoSQL_assignment
             PostToAddComment.Comments.Add(commentBoundProperty);
 
             // Update the post
-            _posts.FindOneAndReplace(post => post.PostOwner == PostToAddComment.PostOwner, PostToAddComment);
+            _posts.FindOneAndReplace(post => post.Id == PostToAddComment.Id, PostToAddComment);
 
             // Insert comment in database
             _comments.InsertOne(commentBoundProperty);
