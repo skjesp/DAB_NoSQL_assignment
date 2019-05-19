@@ -18,7 +18,7 @@ namespace DAB_NoSQL_assignment
         public AddUserModel(IConfiguration config)
         {
             var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("DAB_AFL3_Db");
+            var database = client.GetDatabase("mongodb");
             _users = database.GetCollection<User>("Users");
         }
 
@@ -39,7 +39,7 @@ namespace DAB_NoSQL_assignment
             }
 
             //Add object to database & save changes.
-            user.Circles=new List<Circle>();
+            user.Circles=new List<string>();
             user.BlackList = new List<string>();
             user.FollowedUserIds = new List<string>();
             _users.InsertOne(user);

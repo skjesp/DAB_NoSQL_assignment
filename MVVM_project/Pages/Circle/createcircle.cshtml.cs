@@ -40,15 +40,15 @@ namespace DAB_NoSQL_assignment
                 return Page();
             }
             circlebindproperty.ForUser = user.Name;
-            circlebindproperty.Members = new List<User>();
+            circlebindproperty.Members = new List<string>();
             _circles.InsertOne(circlebindproperty);
 
             if (user.Circles == null)
             {
-                user.Circles = new List<Circle>();
+                user.Circles = new List<string>();
             }
 
-            user.Circles.Add(circlebindproperty);
+            user.Circles.Add(circlebindproperty.Id);
             _users.FindOneAndReplace(u => u.Name == user.Name, user);
 
             return Page();

@@ -14,6 +14,6 @@ namespace DAB_NoSQL_assignment.Models {
         public string ForUser { get; set;}
 
         [BsonElement]
-        public List<User> Members { get; set;}
+        public List<string> Members { get; set;}
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MongoDB.Driver;
 using DAB_NoSQL_assignment.Models;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace DAB_NoSQL_assignment
@@ -24,7 +25,7 @@ namespace DAB_NoSQL_assignment
         }
        
         [BindProperty]
-        public string membername { get; set; }
+        public string MbrName { get; set; }
 
         [BindProperty]
         public string activecircle { get; set; }
@@ -36,26 +37,36 @@ namespace DAB_NoSQL_assignment
             circleList = _circles.Find(circle => true).ToList();
         }
 
-        public IActionResult OnPostAddMember()
+        public string getmbrname(string id)
         {
-            User membertoadd = _users.Find(u => u.Name == membername).FirstOrDefault();
-            Circle circletoaddmember = _circles.Find(c => c.Id == activecircle).FirstOrDefault();
-            User user = _users.Find(usr => usr.Name == circletoaddmember.ForUser).FirstOrDefault();
+            User mbr = _users.Find(u => u.Id == id).FirstOrDefault();
+            if (mbr == null)
+            {
+                return "placeholder";
+            }
+            return mbr.Name;
+        }
 
-            user.Circles.Remove(circletoaddmember);
-           
-            circletoaddmember.Members.Add(membertoadd);
+        public IActionResult OnPostAddMember(string id)
+        {
+            User membertoadd = _users.Find(u => u.Name == MbrName).FirstOrDefault();
+            Circle circletoaddmember = _circles.Find(c => c.Id == id).FirstOrDefault();
+
+            if (circletoaddmember.Members == null)
+            {
+                circletoaddmember.Members = new List<string>();
+            }
+            circletoaddmember.Members.Add(membertoadd.Id);
 
             _circles.FindOneAndReplace(c => c.Id == circletoaddmember.Id,circletoaddmember);
-            
-            membertoadd.Circles.Add(circletoaddmember);
 
-            _users.FindOneAndReplace(u => u.Name == membertoadd.Name,membertoadd);
+            if (membertoadd.Circles == null)
+            {
+                membertoadd.Circles = new List<string>();
+            }
+            membertoadd.Circles.Add(circletoaddmember.Id);
 
-            user.Circles.Add(circletoaddmember);
-            
-            _users.FindOneAndReplace(u => u.Name == user.Name, user);
-
+            _users.FindOneAndReplace(user => user.Name == MbrName, membertoadd);
 
             return RedirectToPage();
         }

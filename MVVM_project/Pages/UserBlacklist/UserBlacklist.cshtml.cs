@@ -31,9 +31,8 @@ namespace DAB_NoSQL_assignment
 
         public class InputModel
         {
-            public MongoDB.Bson.ObjectId userId { get; set; }
-
             public string userName { get; set; }
+            public string blacklistName { get; set; }
         }
 
         [BindProperty]
@@ -90,16 +89,16 @@ namespace DAB_NoSQL_assignment
         public IActionResult OnPost()
         {
             //Validedata ModelState is valid.
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            var user = _users.Find(u => u.Name == Input.userName).FirstOrDefault();
+            var blacklistee = _users.Find(u => u.Name == Input.blacklistName).FirstOrDefault();
 
-            //Add object to database & save changes.
-            _blacklist.InsertOne( new Blacklist {
-                ForUser = new MongoDB.Bson.ObjectId(FindUserByName(Input.userName).Id),
-                listUsers = new List<MongoDB.Bson.ObjectId> { Input.userId }
-            });
+            if (user.BlackList == null)
+            {
+                user.BlackList = new List<string>();
+            }
+            user.BlackList.Add(blacklistee.Id);
+
+            _users.FindOneAndReplace(c => c.Id == user.Id, user);
 
             return RedirectToPage();
         }

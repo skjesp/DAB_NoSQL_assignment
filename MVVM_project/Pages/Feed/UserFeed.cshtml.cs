@@ -67,16 +67,18 @@ namespace DAB_NoSQL_assignment
 
             _postlist= _posts.Find(post => post.PostOwner == user.Id).ToList();
 
-            foreach (var circle in user.Circles)
+            foreach (var crcl in user.Circles)
             {
+                var circle = _circles.Find(c => c.Id == crcl).FirstOrDefault();
                 var leader = _users.Find(user => user.Name == circle.ForUser).FirstOrDefault();
                 if (!leader.BlackList.Contains(user.Id))
                 {
                     _postlist.AddRange(_posts.Find(post => post.PostOwner == leader.Id && post.Circle.Id==circle.Id).ToList());
                 }
 
-                foreach (var member in circle.Members)
+                foreach (var mbr in circle.Members)
                 {
+                    var member = _users.Find(m => m.Id == mbr).FirstOrDefault();
                     if (!member.BlackList.Contains(user.Id))
                     {
                         _postlist.AddRange(_posts.Find(post => post.PostOwner == member.Id && post.Circle.Id == circle.Id).ToList());
