@@ -11,9 +11,9 @@ namespace DAB_NoSQL_assignment.Models {
         public string Id { get; set; }
 
         [BsonElement]
-        public ObjectId ForUser { get; set; } 
+        public string ForUser { get; set; } 
 
         [BsonElement]
-        public List<ObjectId> listUsers { set; get; }
+        public List<string> listUsers { set; get; }
     }
 }

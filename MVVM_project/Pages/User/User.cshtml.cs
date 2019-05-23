@@ -18,7 +18,7 @@ namespace DAB_NoSQL_assignment
         public AddUserModel(IConfiguration config)
         {
             var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("mongodb");
+            var database = client.GetDatabase("DAB_AFL3_Db");
             _users = database.GetCollection<User>("Users");
         }
 

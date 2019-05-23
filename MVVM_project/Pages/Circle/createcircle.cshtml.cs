@@ -18,8 +18,8 @@ namespace DAB_NoSQL_assignment
 
         public createcircleModel(IConfiguration config)
         {
-            var client = new MongoClient(config.GetConnectionString("mongodb"));
-            var database = client.GetDatabase("mongodb");
+            var client = new MongoClient("mongodb://localhost:27017");
+            var database = client.GetDatabase("DAB_AFL3_Db");
             _users = database.GetCollection<User>("Users");
             _circles = database.GetCollection<Circle>("Circles");
         }
