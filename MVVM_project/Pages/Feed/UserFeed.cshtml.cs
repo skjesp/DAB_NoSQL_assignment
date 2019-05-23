@@ -19,6 +19,8 @@ namespace DAB_NoSQL_assignment
         private User user;
         public List<Post> _postlist=new List<Post>();
 
+        public List<User> UserList { get; set; }
+
         public UserFeedModel(IConfiguration config)
         {
             var client = new MongoClient("mongodb://localhost:27017");
@@ -31,7 +33,8 @@ namespace DAB_NoSQL_assignment
 
         public void OnGet()
         {
-
+            //Load list of User
+            UserList = _users.Find(user => true).ToList();
         }
 
         [BindProperty]
@@ -44,6 +47,10 @@ namespace DAB_NoSQL_assignment
 
         public IActionResult OnPost()
         {
+            //Load list of User
+            UserList = _users.Find(user => true).ToList();
+
+
             if (!string.IsNullOrEmpty(Input.searchString))
             {
                 user = _users.Find(ur => ur.Name == Input.searchString).FirstOrDefault();
@@ -85,12 +92,15 @@ namespace DAB_NoSQL_assignment
                 }
             }
 
-            foreach (var followed in user.FollowedUserIds)
+            if (user.BlackList.Count > 0)
             {
-                var usr = _users.Find(ur => ur.Id == followed).FirstOrDefault();
-                if (!usr.BlackList.Contains(user.Id))
+                foreach (var followed in user.FollowedUserIds)
                 {
-                    _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id && post.Circle==null).ToList());
+                    var usr = _users.Find(ur => ur.Id == followed).FirstOrDefault();
+                    if (!usr.BlackList.Contains(user.Id))
+                    {
+                        _postlist.AddRange(_posts.Find(post => post.PostOwner == usr.Id && post.Circle == null).ToList());
+                    }
                 }
             }
             
