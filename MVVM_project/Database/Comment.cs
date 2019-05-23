@@ -14,7 +14,7 @@ namespace DAB_NoSQL_assignment.Models {
 
         // Indicates who owns the posts where the comment i connected to.
         [BsonElement]
-        public string OwnerPostID { get; set; }
+        public string PostID { get; set; }
 
         [BsonElement]
         public string Writer_userID { get; set; }

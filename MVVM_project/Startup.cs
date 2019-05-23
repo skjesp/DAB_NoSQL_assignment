@@ -155,7 +155,7 @@ namespace DAB_NoSQL_assignment
             {
                 PostOwnerID = User1.Id,
                 Text = "First post from Peter! Only circle 1 should see this",
-                Comments = null,
+                Comments = new List<Comment>(),
                 Circle = Circle1,
             };
             
@@ -163,21 +163,22 @@ namespace DAB_NoSQL_assignment
             {
                 PostOwnerID = User4.Id,
                 Text = "First post from Kamilla! Only circle 2 should see this",
-                Comments = null,
+                Comments = new List<Comment>(),
                 Circle = Circle2,
             };
 
             Post Post3 = new Post()
             {
                 PostOwnerID = User5.Id,
-                Text = "Public post from Pernille. Only Peter should be able to see this. All other users are blacklisted."
+                Text = "Public post from Pernille. Only Peter should be able to see this. All other users are blacklisted.",
+                Comments = new List<Comment>(),
             };
 
             Post Post4 = new Post()
             {
                 PostOwnerID = User1.Id,
                 Text = "Second post from Peter! This post is public.",
-                Comments = null,
+                Comments = new List<Comment>(),
             };
             
             PostCollection.InsertOne(Post1);
@@ -190,28 +191,28 @@ namespace DAB_NoSQL_assignment
             Comment Comment1 = new Comment()
             {
                 Text = "First comment on post 1.",
-                OwnerPostID = Post1.Id,
+                PostID = Post1.Id,
                 Writer_userID = User2.Id,
                 Writer_userName = User2.Name,
             };
             Comment Comment2 = new Comment()
             {
                 Text = "Second comment on post 1.",
-                OwnerPostID = Post1.Id,
+                PostID = Post1.Id,
                 Writer_userID = User4.Id,
                 Writer_userName = User4.Name,
             };
             Comment Comment3 = new Comment()
             {
                 Text = "First Comment on post 2.",
-                OwnerPostID = Post2.Id,
+                PostID = Post2.Id,
                 Writer_userID = User3.Id,
                 Writer_userName = User3.Name,
             };
             Comment Comment4 = new Comment()
             {
                 Text = "Second Comment on Post 2",
-                OwnerPostID = Post2.Id,
+                PostID = Post2.Id,
                 Writer_userID = User1.Id,
                 Writer_userName = User1.Name,
             };
@@ -221,6 +222,18 @@ namespace DAB_NoSQL_assignment
             CommentCollection.InsertOne(Comment3);
             CommentCollection.InsertOne(Comment4);
             #endregion
+
+            #region AddCommentsToPosts
+            Post1.Comments.Add(Comment1);
+            Post1.Comments.Add(Comment2);
+            Post2.Comments.Add(Comment3);
+            Post2.Comments.Add(Comment4);
+            
+            // Update the posts
+            PostCollection.ReplaceOne(post => post.Id == Post1.Id, Post1);
+            PostCollection.ReplaceOne(post => post.Id == Post2.Id, Post2);
+            #endregion
+
 
             #region BlackListCreation
 
