@@ -34,7 +34,7 @@ namespace DAB_NoSQL_assignment
             _users = database.GetCollection<User>("Users");
             _posts = database.GetCollection<Post>("Posts");
             _comments = database.GetCollection<Comment>("Comments");
-            _circles = database.GetCollection<Circle>("Circles");
+            _circles = database.GetCollection<Circle>("CircleIDs");
         }
 
         [BindProperty]

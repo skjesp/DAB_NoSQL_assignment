@@ -11,8 +11,8 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <!--Type owner of post here-->
-                <label asp-for="postBoundProperty.PostOwner"> Owner of Posts</label>
-                <input asp-for="postBoundProperty.PostOwner" class="form-control" />
+                <label asp-for="postBoundProperty.PostOwnerID"> Owner of Posts</label>
+                <input asp-for="postBoundProperty.PostOwnerID" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="postBoundProperty.Text">Post Text</label>
@@ -42,7 +42,7 @@
                 {
                     <table>
                         <tr>
-                            <th>PostOwner</th>
+                            <th>PostOwnerID</th>
                             <th>Text</th>
                         </tr>
                         <tr>

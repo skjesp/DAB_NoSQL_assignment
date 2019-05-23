@@ -20,7 +20,7 @@ namespace DAB_NoSQL_assignment.Models {
         public string Age { get; set; }
 
         [BsonElement]
-        public List<string> Circles { get; set; }
+        public List<string> CircleIDs { get; set; }
 
         [BsonElement]
         public List<string> BlackList { get; set; }

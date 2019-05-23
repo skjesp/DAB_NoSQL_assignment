@@ -21,7 +21,7 @@ namespace DAB_NoSQL_assignment
             var client = new MongoClient("mongodb://localhost:27017");
             var database = client.GetDatabase("DAB_AFL3_Db");
             _users = database.GetCollection<User>("Users");
-            _circles = database.GetCollection<Circle>("Circles");
+            _circles = database.GetCollection<Circle>("CircleIDs");
         }
 
         [BindProperty]
@@ -42,12 +42,12 @@ namespace DAB_NoSQL_assignment
             circlebindproperty.Members = new List<string>();
             _circles.InsertOne(circlebindproperty);
 
-            if (user.Circles == null)
+            if (user.CircleIDs == null)
             {
-                user.Circles = new List<string>();
+                user.CircleIDs = new List<string>();
             }
 
-            user.Circles.Add(circlebindproperty.Id);
+            user.CircleIDs.Add(circlebindproperty.Id);
             _users.FindOneAndReplace(u => u.Name == user.Name, user);
 
             return Page();

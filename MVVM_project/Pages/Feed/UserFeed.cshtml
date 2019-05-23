@@ -4,7 +4,8 @@
     ViewData["Title"] = "User Feed";
 }
 
-<h5>List of Users</h5>
+Velkommen til userfeed. Under denne tekst er alle brugerne i databasen angivet. <br/>
+
 <table>
     <tr>
         <th>UserId</th>
@@ -23,9 +24,22 @@
         </tr>
     }
 </table>
+<br/>
+Under seeding er der allerede brugere som følger hinanden. Det forholder sig således:<br/>
+Peter følger Pernille. Han har blacklistet Pernille og Rune.<br/>
+Signe følger Peter og Pernille <br />
+Rune følger Peter og Pernille <br />
+Kamilla følger Pernille <br />
+Pernille følger Kamilla og Peter. Hun har blacklisted Signe, Rune og Kamilla<br />
 
+<br/>
+Under seeding er der oprettet følgende lister:<br/>
+Circle 1: Peter og Signe. Peter er ejer af cirklen.<br/>
+Circle 2: Peter, Kamilla og Pernille. Pernille er ejer af cirklen.<br/>
+<br/>
 
-<h1>UserFeed</h1>
+Ved at indtaste navnet på en given bruger, vises brugerens feed.
+
 <br />
 <div class="row">
     <div class="col-md-6">
@@ -49,11 +63,11 @@
     {
         <table id="PostSection">
             <tr>
-                <th>PostOwner</th>
+                <th>PostOwner Name</th>
                 <th>Text</th>
             </tr>
             <tr>
-                <td>@post.PostOwner</td>
+                <td>@Model.UserList.Find(user => user.Id == post.PostOwnerID).Name</td> 
                 <td>@post.Text</td>
             </tr>
             <tr>

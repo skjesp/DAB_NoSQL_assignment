@@ -28,7 +28,7 @@ namespace DAB_NoSQL_assignment
             var database = client.GetDatabase("DAB_AFL3_Db");
             _users = database.GetCollection<User>("Users");
             _posts = database.GetCollection<Post>("Posts");
-            _circles = database.GetCollection<Circle>("Circles");
+            _circles = database.GetCollection<Circle>("CircleIDs");
             _comments = database.GetCollection<Comment>("Comments");
         }
 
@@ -74,14 +74,14 @@ namespace DAB_NoSQL_assignment
                 return RedirectToPage();
             }
             
-            _postlist = _posts.Find(post => post.PostOwner == user.Id && post.Circle == null).ToList();
+            _postlist = _posts.Find(post => post.PostOwnerID == user.Id && post.Circle == null).ToList();
             
-            foreach (var crcl in guest.Circles)
+            foreach (var crcl in guest.CircleIDs)
             {
                 var circle = _circles.Find(c => c.Id == crcl).FirstOrDefault();
                 if (circle.Members.Contains(user.Id)||circle.ForUser==user.Name)
                 {
-                    _postlist.AddRange(_posts.Find(post => post.PostOwner == user.Id && post.Circle.Id == circle.Id).ToList());
+                    _postlist.AddRange(_posts.Find(post => post.PostOwnerID == user.Id && post.Circle.Id == circle.Id).ToList());
                 }
                 
             }

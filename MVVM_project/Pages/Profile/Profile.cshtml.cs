@@ -34,7 +34,7 @@ namespace DAB_NoSQL_assignment
             _users = database.GetCollection<User>("Users");
             _posts = database.GetCollection<Post>("Posts");
             _comments = database.GetCollection<Comment>("Comments");
-            _circles = database.GetCollection<Circle>("Circles");
+            _circles = database.GetCollection<Circle>("CircleIDs");
         }
 
         [BindProperty]
@@ -52,7 +52,7 @@ namespace DAB_NoSQL_assignment
         public IActionResult OnPostPost()
         {
             //See if user exists
-            user = _users.Find(user => user.Name == postBoundProperty.PostOwner).FirstOrDefault(); // TODO: Try using .single()
+            user = _users.Find(user => user.Name == postBoundProperty.PostOwnerID).FirstOrDefault(); // TODO: Try using .single()
 
             if (user==null)
             {
@@ -60,7 +60,7 @@ namespace DAB_NoSQL_assignment
             }
             
             // Add userid to postBoundProperty (object)
-            postBoundProperty.PostOwner = user.Id;
+            postBoundProperty.PostOwnerID = user.Id;
 
             var crcl = _circles.Find(c => c.Id == postcircleBoundProperty).FirstOrDefault();
             postBoundProperty.Circle = crcl;
@@ -70,14 +70,14 @@ namespace DAB_NoSQL_assignment
             _posts.InsertOne(postBoundProperty);
 
             // Add selected posts to list.
-            postList = _posts.Find(post => post.PostOwner == user.Id).ToList();
+            postList = _posts.Find(post => post.PostOwnerID == user.Id).ToList();
             return Page();
         }
 
         public IActionResult OnPostShowPosts()
         {
-            user = _users.Find(user => user.Name == postBoundProperty.PostOwner).FirstOrDefault();
-            postList = _posts.Find(post => post.PostOwner == user.Id).ToList();
+            user = _users.Find(user => user.Name == postBoundProperty.PostOwnerID).FirstOrDefault();
+            postList = _posts.Find(post => post.PostOwnerID == user.Id).ToList();
             return Page();
         }
 

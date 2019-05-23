@@ -39,7 +39,7 @@ namespace DAB_NoSQL_assignment
             }
 
             //Add object to database & save changes.
-            user.Circles=new List<string>();
+            user.CircleIDs=new List<string>();
             user.BlackList = new List<string>();
             user.FollowedUserIds = new List<string>();
             _users.InsertOne(user);

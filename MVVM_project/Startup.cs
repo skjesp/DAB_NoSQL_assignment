@@ -68,7 +68,7 @@ namespace DAB_NoSQL_assignment
             var database = client.GetDatabase("DAB_AFL3_Db");
 
             var UserCollection = database.GetCollection<User>("Users");
-            var CircleCollection = database.GetCollection<Circle>("Circles");
+            var CircleCollection = database.GetCollection<Circle>("CircleIDs");
             var CommentCollection = database.GetCollection<Comment>("Comments");
             var PostCollection = database.GetCollection<Post>("Posts");
             var BlacklistCollection = database.GetCollection<Blacklist>("Blacklists");
@@ -81,7 +81,7 @@ namespace DAB_NoSQL_assignment
                 Name = "Peter",
                 Gender = "Mand",
                 Age = "20",
-                Circles = new List<string>(),
+                CircleIDs = new List<string>(),
                 BlackList = new List<string>(),
                 FollowedUserIds = new List<string>(),
             };
@@ -90,25 +90,25 @@ namespace DAB_NoSQL_assignment
                 Name = "Signe",
                 Gender = "Kvinde",
                 Age = "25",
-                Circles = new List<string>(),
+                CircleIDs = new List<string>(),
                 BlackList = new List<string>(),
-                FollowedUserIds = new List<string>{User1.Id},
+                FollowedUserIds = new List<string>(),
             };
             User User3 = new User()
             {
                 Name = "Rune",
                 Gender = "Mand",
                 Age = "19",
-                Circles = new List<string>(),
+                CircleIDs = new List<string>(),
                 BlackList = new List<string>(),
-                FollowedUserIds = new List<string>{User1.Id},
+                FollowedUserIds = new List<string>(),
             };
             User User4 = new User()
             {
                 Name = "Kamilla",
                 Gender = "Kvinde",
                 Age = "23",
-                Circles = new List<string>(),
+                CircleIDs = new List<string>(),
                 BlackList = new List<string>(),
                 FollowedUserIds = new List<string>(),
             };
@@ -117,17 +117,19 @@ namespace DAB_NoSQL_assignment
                 Name = "Pernille",
                 Gender = "Kvinde",
                 Age = "28",
-                Circles = new List<string>(),
+                CircleIDs = new List<string>(),
                 BlackList = new List<string>(),
-                FollowedUserIds = new List<string>{User4.Id, User1.Id},
+                FollowedUserIds = new List<string>(),
             };
 
-            // UserInsertion
+            // UserInsertion - Make MongoDB create ID for them
             UserCollection.InsertOne(User1);
             UserCollection.InsertOne(User2);
             UserCollection.InsertOne(User3);
             UserCollection.InsertOne(User4);
             UserCollection.InsertOne(User5);
+
+            
             #endregion
 
             #region CircleSeedCreation
@@ -135,15 +137,13 @@ namespace DAB_NoSQL_assignment
             Circle Circle1 = new Circle()
             {
                 ForUser = User1.Id,
-                Members = new List<string>{User2.Id, User3.Id},
+                Members = new List<string>{User1.Id, User2.Id},
             };
-
-            
 
             Circle Circle2 = new Circle()
             {
                 ForUser = User4.Id,
-                Members = new List<string>{ User1.Id, User5.Id },
+                Members = new List<string>{ User1.Id, User5.Id, User4.Id },
             };
 
             CircleCollection.InsertOne(Circle1);
@@ -153,24 +153,31 @@ namespace DAB_NoSQL_assignment
             #region PostSeedCreation
             Post Post1 = new Post()
             {
-                PostOwner = User1.Id,
-                Text = "First post from User 1! Only circle 1 should see this",
+                PostOwnerID = User1.Id,
+                Text = "First post from Peter! Only circle 1 should see this",
                 Comments = null,
                 Circle = Circle1,
             };
             
             Post Post2 = new Post()
             {
-                PostOwner = User4.Id,
-                Text = "First post from User 4! Only circle 2 should see this",
+                PostOwnerID = User4.Id,
+                Text = "First post from Kamilla! Only circle 2 should see this",
                 Comments = null,
                 Circle = Circle2,
             };
 
             Post Post3 = new Post()
             {
-                PostOwner = User5.Id,
-                Text = "Only user 1 should be able to see this. All other users are blacklisted."
+                PostOwnerID = User5.Id,
+                Text = "Public post from Pernille. Only Peter should be able to see this. All other users are blacklisted."
+            };
+
+            Post Post4 = new Post()
+            {
+                PostOwnerID = User1.Id,
+                Text = "Second post from Peter! This post is public.",
+                Comments = null,
             };
             
             PostCollection.InsertOne(Post1);
@@ -226,6 +233,41 @@ namespace DAB_NoSQL_assignment
             // Insert blacklist for User5
             User5.BlackList.Add(Blacklist1.Id);
             BlacklistCollection.InsertOne(Blacklist1);
+            #endregion
+
+            #region RelationCreation
+
+            // Followers Configuration
+            User1.FollowedUserIds.Add(User5.Id);
+            User2.FollowedUserIds.Add(User1.Id);
+            User2.FollowedUserIds.Add(User5.Id);
+            User3.FollowedUserIds.Add(User1.Id);
+            User3.FollowedUserIds.Add(User5.Id);
+            User4.FollowedUserIds.Add(User5.Id);
+            User5.FollowedUserIds.Add(User4.Id);
+            User5.FollowedUserIds.Add(User1.Id);
+
+            // CircleIDs Configuration
+            User1.CircleIDs.Add(Circle1.Id);
+            User2.CircleIDs.Add(Circle1.Id);
+            User3.CircleIDs.Add(Circle1.Id);
+            User1.CircleIDs.Add(Circle2.Id);
+            User5.CircleIDs.Add(Circle2.Id);
+
+            // Blacklisting configuration
+            User1.BlackList.Add(User3.Id);
+            User1.BlackList.Add(User5.Id);
+            User5.BlackList.Add(User2.Id);
+            User5.BlackList.Add(User3.Id);
+            User5.BlackList.Add(User4.Id);
+
+            // Update the database
+            UserCollection.ReplaceOne(user => user.Name == "Peter", User1);
+            UserCollection.ReplaceOne(user => user.Name == "Signe", User2);
+            UserCollection.ReplaceOne(user => user.Name == "Rune", User3);
+            UserCollection.ReplaceOne(user => user.Name == "Kamilla", User4);
+            UserCollection.ReplaceOne(user => user.Name == "Pernille", User5);
+
             #endregion
 
         }

@@ -11,7 +11,10 @@ namespace DAB_NoSQL_assignment.Models {
         public string Id { get; set ; }
 
         [BsonElement]
-        public string PostOwner { get; set; }
+        public string PostOwnerID { get; set; }
+
+        [BsonElement]
+        public string PostOwnerName { get; set; }
 
         [BsonElement]
         public string Text { get; set; }
