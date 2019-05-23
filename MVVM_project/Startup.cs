@@ -184,6 +184,7 @@ namespace DAB_NoSQL_assignment
             PostCollection.InsertOne(Post1);
             PostCollection.InsertOne(Post2);
             PostCollection.InsertOne(Post3);
+            PostCollection.InsertOne(Post4);
             #endregion
 
             #region CommentSeedCreation

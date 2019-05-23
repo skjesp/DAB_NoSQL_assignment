@@ -15,7 +15,7 @@ namespace DAB_NoSQL_assignment
         private readonly IMongoCollection<User> _users;
         private readonly IMongoCollection<Circle> _circles;
         private User user;
-
+        public List<User> UserList { get; set; }
         public createcircleModel(IConfiguration config)
         {
             var client = new MongoClient("mongodb://localhost:27017");
@@ -27,11 +27,18 @@ namespace DAB_NoSQL_assignment
         [BindProperty]
         public Circle circlebindproperty { get; set; }
 
+        public void OnGet()
+        {
+            //Load list of User
+            UserList = _users.Find(user => true).ToList();
+        }
+
         [BindProperty]
         public String owner { get; set; }
 
         public IActionResult OnPost()
         {
+            UserList = _users.Find(user => true).ToList();
             user = _users.Find(user => user.Name == owner).FirstOrDefault();
 
             if (user == null)

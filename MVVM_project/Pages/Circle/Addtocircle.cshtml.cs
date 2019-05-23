@@ -23,7 +23,7 @@ namespace DAB_NoSQL_assignment
             _users = database.GetCollection<User>("Users");
             _circles = database.GetCollection<Circle>("CircleIDs");
         }
-       
+        public List<User> UserList { get; set; }
         [BindProperty]
         public string MbrName { get; set; }
 
@@ -34,6 +34,7 @@ namespace DAB_NoSQL_assignment
 
         public void OnGet()
         {
+            UserList = _users.Find(user => true).ToList();
             circleList = _circles.Find(circle => true).ToList();
         }
 
@@ -49,6 +50,11 @@ namespace DAB_NoSQL_assignment
 
         public IActionResult OnPostAddMember(string id)
         {
+            if (MbrName == null)
+            {
+                return RedirectToPage();
+            }
+
             User membertoadd = _users.Find(u => u.Name == MbrName).FirstOrDefault();
             Circle circletoaddmember = _circles.Find(c => c.Id == id).FirstOrDefault();
 

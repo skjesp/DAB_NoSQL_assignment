@@ -27,7 +27,7 @@
                         </tr>
                         <tr>
                             <td>@circle.Id</td>
-                            <td>@circle.ForUser</td>
+                            <td>@Model.UserList.Find(user => user.Id == circle.ForUser).Name</td>
                         </tr>
                         <tr>
                             <th>Members: </th>

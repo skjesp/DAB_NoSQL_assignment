@@ -25,12 +25,9 @@ namespace DAB_NoSQL_assignment
 
         public FollowModel(IConfiguration config)
         {
-            //string connectionstring = "mongodb://localhost:27017/DAB_AFL3_Db";
-
             var client = new MongoClient("mongodb://localhost:27017");
             var database = client.GetDatabase("DAB_AFL3_Db"); ;
-            
-            // var database = client.GetDatabase("mongodb://localhost:27017/DAB_AFL3_Db");
+
             _users = database.GetCollection<User>("Users");
             _posts = database.GetCollection<Post>("Posts");
             _comments = database.GetCollection<Comment>("Comments");
@@ -51,6 +48,11 @@ namespace DAB_NoSQL_assignment
             //Validedata ModelState is valid.
             var user = _users.Find(u => u.Name == Input.Follower).FirstOrDefault();
             var Followed = _users.Find(u => u.Name == Input.Followed).FirstOrDefault();
+
+            if (Input.Follower == null || Input.Followed == null)
+            {
+                return RedirectToPage();
+            }
 
             if (user.FollowedUserIds == null)
             {

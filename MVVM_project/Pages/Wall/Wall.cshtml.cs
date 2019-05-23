@@ -20,7 +20,7 @@ namespace DAB_NoSQL_assignment
         private User user;
         private User guest;
         public List<Post> _postlist = new List<Post>();
-
+        public List<User> UserList { get; set; }
 
         public WallModel(IConfiguration config)
         {
@@ -34,7 +34,7 @@ namespace DAB_NoSQL_assignment
 
         public void OnGet()
         {
-
+            UserList = _users.Find(user => true).ToList();
         }
 
         [BindProperty]
@@ -48,6 +48,10 @@ namespace DAB_NoSQL_assignment
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // Load list of Users
+            UserList = _users.Find(user => true).ToList();
+
+            // Find the users which are requested from HTML-Input.
             if (!string.IsNullOrEmpty(Input.searchUser) || !string.IsNullOrEmpty(Input.searchGuest))
             {
                 user = _users.Find(ur => ur.Name == Input.searchUser).FirstOrDefault();
@@ -62,20 +66,22 @@ namespace DAB_NoSQL_assignment
                 {
                     return RedirectToPage();
                 }
-
             }
             else
             {
                 return RedirectToPage();
             }
 
+            // If the guest is blacklisted, don't return any information.
             if (user.BlackList.Contains(guest.Id))
             {
                 return RedirectToPage();
             }
             
+            // Get all posts which isn't restricted by a circle.
             _postlist = _posts.Find(post => post.PostOwnerID == user.Id && post.Circle == null).ToList();
             
+
             foreach (var crcl in guest.CircleIDs)
             {
                 var circle = _circles.Find(c => c.Id == crcl).FirstOrDefault();

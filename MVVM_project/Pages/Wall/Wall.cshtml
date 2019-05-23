@@ -6,22 +6,56 @@
 
 <h1>Wall</h1>
 
-View the users wall
+Velkommen til Wall. Under denne tekst er alle brugerne i databasen angivet for at gøre det nemmere<br />
+at teste dette view<br />
+
+<table>
+    <tr>
+        <th>UserId</th>
+        <th>User</th>
+        <th>Gender</th>
+        <th>Age</th>
+    </tr>
+
+    @foreach (var user in @Model.UserList)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Name</td>
+            <td>@user.Gender</td>
+            <td>@user.Age</td>
+        </tr>
+    }
+</table>
+<br />
+Under seeding er der allerede brugere som følger hinanden. Det forholder sig således:<br />
+Peter følger Pernille. Han har blacklistet Pernille og Rune.<br />
+Signe følger Peter og Pernille <br />
+Rune følger Peter og Pernille <br />
+Kamilla følger Pernille <br />
+Pernille følger Kamilla og Peter. Hun har blacklisted Signe, Rune og Kamilla<br />
+
+<br />
+Under seeding er der oprettet følgende lister:<br />
+Circle 1: Peter og Signe. Peter er ejer af cirklen.<br />
+Circle 2: Peter, Kamilla og Pernille. Pernille er ejer af cirklen.<br />
+<br />
+
 <br />
 <div class="row">
     <div class="col-md-6">
         <form method="post">
-            <h5>Select User and Guest.</h5>
+            <h5>Vælg ejer af Wall samt gæsten til wall</h5>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.searchUser">Username</label>
-                <input asp-for="Input.searchUser" class="form-control" placeholder="ex. Josef" />
+                <label asp-for="Input.searchUser">Ejer af Wall</label>
+                <input asp-for="Input.searchUser" class="form-control" placeholder="ex. Peter" />
                 <span asp-validation-for="Input.searchUser" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.searchGuest">Guestname</label>
-                <input asp-for="Input.searchGuest" class="form-control" placeholder="ex. Josef" />
+                <label asp-for="Input.searchGuest">Gæsten til wall</label>
+                <input asp-for="Input.searchGuest" class="form-control" placeholder="ex. Signe" />
                 <span asp-validation-for="Input.searchGuest" class="text-danger"></span>
             </div>
             <hr />
@@ -35,32 +69,32 @@ View the users wall
 @if (Model._postlist != null)
 {
     @foreach (var post in @Model._postlist)
-     {
-         <table id="PostSection">
-             <tr>
-                 <th>PostOwnerID</th>
-                 <th>Text</th>
-             </tr>
-             <tr>
-                 <td>@post.PostOwnerID</td>
-                 <td>@post.Text</td>
-             </tr>
-             <tr>
-                 <th>Commenters:</th>
-                 <th>Comments:</th>
-             </tr>
-             @if (post.Comments != null)
-             {
-                 @foreach (var comment in post.Comments)
-                  {
-                      <tr>
-                          <td>@comment.Writer_userName</td>
-                          <td>@comment.Text</td>
-                      </tr>
-                  }
-             }
-         </table>
-         <br />
-         <br />
-     }
+    {
+        <table id="PostSection">
+            <tr>
+                <th>PostOwner Name</th>
+                <th>Text</th>
+            </tr>
+            <tr>
+                <td>@Model.UserList.Find(user => user.Id == post.PostOwnerID).Name</td>
+                <td>@post.Text</td>
+            </tr>
+            <tr>
+                <th>Commenters:</th>
+                <th>Comments:</th>
+            </tr>
+            @if (post.Comments != null)
+            {
+                @foreach (var comment in post.Comments)
+                {
+                    <tr>
+                        <td>@comment.Writer_userName</td>
+                        <td>@comment.Text</td>
+                    </tr>
+                }
+            }
+        </table>
+        <br />
+        <br />
+    }
 }
