@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -64,8 +65,11 @@ namespace DAB_NoSQL_assignment
 
             var crcl = _circles.Find(c => c.Id == postcircleBoundProperty).FirstOrDefault();
             postBoundProperty.Circle = crcl;
-            
 
+            // Set TimeStamp on post
+            var culture = new CultureInfo("en-GB");
+            postBoundProperty.TimeStamp = DateTime.Now.ToString(culture);
+            
             // Upload post in database
             _posts.InsertOne(postBoundProperty);
 
@@ -97,6 +101,8 @@ namespace DAB_NoSQL_assignment
                 PostToAddComment.Comments = new List<Comment>();
             }
 
+            var culture = new CultureInfo("en-GB");
+            commentBoundProperty.TimeStamp = DateTime.Now.ToString(culture);
             PostToAddComment.Comments.Add(commentBoundProperty);
 
             // Update the post

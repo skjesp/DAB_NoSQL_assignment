@@ -24,5 +24,8 @@ namespace DAB_NoSQL_assignment.Models {
 
         [BsonElement]
         public Circle Circle { get; set; }
+
+        [BsonElement]
+        public string TimeStamp { get; set; }
     }
 }
